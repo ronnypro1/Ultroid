@@ -351,7 +351,28 @@ async def _(e):
 
 @ultroid_cmd(pattern="gban( (.*)|$)", fullsudo=True)
 async def _(e):
-    xx = await e.eor("`Gbanning...`")
+    animation_interval = 0.3
+    animation_ttl = range(0, 17)
+    animation_chars = [
+        "`Searching User Info ══════════  0%`\n`Loading Gban libraries ══════════  0%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰════════ 20%`\n`Loading Gban libraries ▰═════════ 10%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰══════ 40%`\n`Loading Gban libraries ▰▰════════ 20%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰▰▰════ 60%`\n`Loading Gban libraries ▰▰▰▰══════ 40%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰══ 80%`\n`Loading Gban libraries ▰▰▰▰▰▰════ 60%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰══ 80%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ══════════ 0%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰════════ 20%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰══════ 40%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰════ 60%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰══ 80%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`\nRunning GBan scripts 〇",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`\nRunning GBan scripts ◔",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`\nRunning GBan scripts ◑",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`\nRunning GBan scripts ◕",
+        "`Searching User Info ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Loading Gban libraries ▰▰▰▰▰▰▰▰▰▰ 100%`\n`Initializing Gban bot ▰▰▰▰▰▰▰▰▰▰ 100%`\nRunning GBan scripts ⬤"
+    ]
+    xx = await e.eor("`Sᴛᴀʀᴛɪɴɢ GBᴀɴ`")
     reason = ""
     if e.reply_to_msg_id:
         userid = (await e.get_reply_message()).sender_id
@@ -392,7 +413,7 @@ async def _(e):
     elif is_gbanned(userid):
         return await eod(
             xx,
-            "`User is already gbanned and added to gbanwatch.`",
+            f"`User: {name} - ID: {userid} is already gbanned and added to gbanwatch.`",
             time=4,
         )
     if e.client._dialogs:
@@ -400,6 +421,13 @@ async def _(e):
     else:
         dialog = await e.client.get_dialogs()
         e.client._dialogs.extend(dialog)
+    for i in animation_ttl:
+        await asyncio.sleep(animation_interval)
+        await xx.edit(animation_chars[i % 17])
+    await asyncio.sleep(2)
+    await xx.edit(f"Start banning globally {name}.....")
+    await asyncio.sleep(2)
+    await xx.edit(f"Gbanning: {name}, reason: {reason} ...(◣_◢)")
     for ggban in dialog:
         if ggban.is_group or ggban.is_channel:
             try:
@@ -407,9 +435,9 @@ async def _(e):
                 chats += 1
             except FloodWaitError as fw:
                 LOGS.info(
-                    f"[FLOOD_WAIT_ERROR] : on GBAN Command\nSleeping for {fw.seconds+10}"
+                    f"[FLOOD_WAIT_ERROR] : on GBAN Command\nSleeping for 5"
                 )
-                await asyncio.sleep(fw.seconds + 10)
+                await asyncio.sleep(5)
                 try:
                     await e.client.edit_permissions(
                         ggban.id, userid, view_messages=False
@@ -422,11 +450,14 @@ async def _(e):
             except BaseException as er:
                 LOGS.exception(er)
     gban(userid, reason)
+    await asyncio.sleep(1)
     if isinstance(user, User):
         await e.client(BlockRequest(userid))
-    gb_msg = f"**#Gbanned** {name} `in {chats} chats and added to gbanwatch!`"
+    gb_msg = "♱ sᴇ ᴀᴄᴇʀᴄᴀ ʟᴀ ᴅᴇsᴛʀᴜᴄᴄɪᴏɴ ᴅᴇ ᴀʟɢᴜɪᴇɴ ♱\n\n"
+    gb_msg += f"**#GBᴀɴɴᴇᴅ:** {name} `in {chats} chats and added to gbanwatch!`"
     if reason:
-        gb_msg += f"\n**Reason** : {reason}"
+        gb_msg += f"\n**Rᴇᴀsᴏɴ: ** {reason}"
+    gb_msg += "\n\nᴀʜᴏʀᴀ sᴜғʀɪʀᴀs ʟᴀs ᴄᴏɴsᴇᴄᴜᴇɴᴄɪᴀs"
     await xx.edit(gb_msg)
 
 
